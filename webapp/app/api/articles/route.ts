@@ -51,6 +51,8 @@ const searches: Article[] = [
   }
 ]
 
+export const dynamic = 'force-static'
+
 export async function GET() {
   const sortedSearches = [...searches].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
