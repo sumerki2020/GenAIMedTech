@@ -35,6 +35,7 @@ export default function Home() {
       setFormData(prev => ({ ...prev, query: '' }))
     } catch (err) {
       setError('Failed to process query. Please try again.')
+      console.error(err)
     } finally {
       setIsLoading(false)
     }

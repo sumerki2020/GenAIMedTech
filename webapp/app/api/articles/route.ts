@@ -9,35 +9,45 @@ const searches: Article[] = [
     query: 'machine learning tutorials',
     title: 'Search Results for: machine learning tutorials',
     createdAt: '2024-03-15T10:30:00Z',
-    results: 156
+    results: 156,
+    language: 'en',
+    skillLevel: 'beginner'
   },
   {
     id: '2',
     query: 'javascript best practices',
     title: 'Search Results for: javascript best practices',
     createdAt: '2024-03-14T15:45:00Z',
-    results: 89
+    results: 89,
+    language: 'en',
+    skillLevel: 'beginner'
   },
   {
     id: '3',
     query: 'react hooks examples',
     title: 'Search Results for: react hooks examples',
     createdAt: '2024-03-13T09:20:00Z',
-    results: 234
+    results: 234,
+    language: 'en',
+    skillLevel: 'beginner'
   },
   {
     id: '4',
     query: 'nextjs deployment',
     title: 'Search Results for: nextjs deployment',
     createdAt: '2024-03-12T14:15:00Z',
-    results: 67
+    results: 67,
+    language: 'en',
+    skillLevel: 'beginner'
   },
   {
     id: '5',
     query: 'typescript tips',
     title: 'Search Results for: typescript tips',
     createdAt: '2024-03-11T11:00:00Z',
-    results: 123
+    results: 123,
+    language: 'en',
+    skillLevel: 'beginner'
   }
 ]
 
