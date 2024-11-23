@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { Article } from '@/types/article'
 import { languages, type LanguageCode, type SkillLevel } from '@/constants/languages'
+import ArticleViewer from '@/components/ArticleViewer'
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -125,6 +126,8 @@ export default function Home() {
 
         {/* Search History */}
         <SearchHistory />
+
+        <ArticleViewer id="your-article-id" />
       </div>
     </main>
   )

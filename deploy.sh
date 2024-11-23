@@ -8,5 +8,6 @@ cd webapp
 
 npm run build
 
-#gsutil -m rsync -r out gs://$BUCKET_NAME/
-#gsutil -m setmeta -h "Cache-Control:public, max-age=3600" gs://$BUCKET_NAME/**/*
+gsutil -m rsync -r out gs://$BUCKET_NAME/
+gsutil -m setmeta -h "Cache-Control:public, max-age=1" gs://$BUCKET_NAME/**/*
+gsutil web set -m index.html -e 404.html gs://$BUCKET_NAME
