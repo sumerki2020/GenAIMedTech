@@ -117,7 +117,7 @@ export default function Home() {
               disabled={isLoading || formData.query.trim().length < 3}
               className="w-full bg-blue-500 text-white py-3 px-6 hover:bg-blue-600 disabled:bg-blue-300 transition"
             >
-              {isLoading ? 'Processing...' : 'Search'}
+              {isLoading ? 'Processing...' : 'Generate article'}
             </button>
           </form>
         </div>

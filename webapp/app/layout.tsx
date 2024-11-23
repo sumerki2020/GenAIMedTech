@@ -19,7 +19,7 @@ export default function RootLayout({
       <body className={`${inter.className} bg-white text-navy-900`}>
         <header className="bg-white border-b">
           <div className="max-w-4xl mx-auto p-4">
-            <h1 className="text-2xl font-bold text-navy-900">Generate an article</h1>
+            <h1 className="text-2xl opacity-50 font-bold text-navy-900">🩺  GenAIMedTech</h1>
           </div>
         </header>
         
