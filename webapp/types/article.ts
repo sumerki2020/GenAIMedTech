@@ -1,6 +1,9 @@
 export interface Article {
   id: string;
-  url: string;
+  query: string;
+  language: string;
+  skillLevel: 'beginner' | 'professional';
   title: string;
   createdAt: string;
+  results?: number;
 } 
