@@ -58,6 +58,7 @@ export default function Home() {
       id: 'placeholder-id',
       query: formData.query,
       language: formData.language,
+      title: `Search Results for: ${formData.query}`,
       skillLevel: formData.skillLevel,
       content: examples[1].response,
       createdAt: new Date().toISOString(),
