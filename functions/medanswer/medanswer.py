@@ -100,6 +100,28 @@ User Query:"""
 @functions_framework.http
 def generate(request):
     """HTTP Cloud Function to interact with LLM."""
+    allowed_origins = ['http://localhost:3000','http://127.0.0.1:3000','https://genaimedtech.storage.googleapis.com']
+    origin = request.headers.get('Origin')
+    
+    # Log CORS details
+    logger.info(f"Request origin: {origin}")
+    
+    if origin in allowed_origins:
+        headers = {
+            'Access-Control-Allow-Origin': origin,
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Vary': 'Origin'
+        }
+        logger.info("CORS headers applied for allowed origin")
+    else:
+        headers = {}
+        logger.warning(f"Request from unauthorized origin: {origin}")
+
+    # Handle OPTIONS request (preflight)
+    if request.method == 'OPTIONS':
+        logger.info("Handling OPTIONS preflight request")
+        return ('', 204, headers)
 
     # Get user input from request body
     request_json = request.get_json(silent=True)

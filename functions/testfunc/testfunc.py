@@ -25,7 +25,7 @@ def hello_http(request):
     if request_args:
         logger.info(f"Request query parameters: {request_args}")
      
-    allowed_origins = ['http://localhost:3000', 'https://*']
+    allowed_origins = ['http://localhost:3000','http://127.0.0.1:3000', 'https://*','https://genaimedtech.storage.googleapis.com']
     origin = request.headers.get('Origin')
     
     # Log CORS details
