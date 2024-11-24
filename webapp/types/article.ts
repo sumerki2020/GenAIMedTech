@@ -4,6 +4,7 @@ export interface Article {
   language?: string;
   skillLevel?: string;
   title: string;
+  content: string;
   createdAt: string;
   results?: number;
 } 
