@@ -7,8 +7,8 @@ export default function ArticleViewer({ article }: { article: Article }) {
   if (!article) return null
 
   return (
-    <div className="prose max-w-none">
-      <h1>{article.query}</h1>
+    <div id="Article" className="prose max-w-none bg-white p-4 rounded-lg shadow-md">
+      <h2>{article.query}</h2>
       <div className="flex gap-2 text-sm text-gray-600">
         <span>Language: {article.language}</span>
         <span>•</span>

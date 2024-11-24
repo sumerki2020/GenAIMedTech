@@ -19,3 +19,35 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+span {
+  margin: 3px;
+}
+h2 {
+  font-size: 25px;
+  font-style: bold;
+}
+img[alt$=">"] {
+  float: right;
+  margin: 10px;
+  padding: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid lightgray;
+  width: 200px;
+}
+#Article {
+  padding: 25px; 
+}
+
+img[alt$="<"] {
+  float: left;
+}
+
+img[alt$="><"] {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  
+  float: none!important;
+
+}

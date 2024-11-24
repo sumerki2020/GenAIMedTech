@@ -25,6 +25,10 @@ from google.cloud import bigquery
 from google.cloud import storage  # type: ignore
 from vertexai.preview.generative_models import GenerativeModel  # type: ignore
 from sentence_transformers import SentenceTransformer
+import http.server
+import socketserver
+from urllib.parse import urlparse, parse_qs
+import json
 
 def generate_vector(text: str, model_name: str = "all-MiniLM-L6-v2") -> list[float]:
     """Generate an embedding vector for the given text.
@@ -102,7 +106,7 @@ def process_document(
         bq_table: Name of the BigQuery table.
     """
     doc_path = f"gs://{input_bucket}/{filename}"
-    print(f"�� {event_id}: Getting document text")
+    print(f" {event_id}: Getting document text")
     doc_text = "\n".join(
         get_document_text(
             doc_path,
@@ -248,3 +252,89 @@ def write_to_bigquery(
     bq_client.insert_rows_json(table, rows)
 
 
+class CloudFunctionHandler(http.server.SimpleHTTPRequestHandler):
+    def do_POST(self):
+        # Read the request body
+        content_length = int(self.headers['Content-Length'])
+        post_data = self.rfile.read(content_length)
+        request_json = json.loads(post_data.decode('utf-8'))
+
+        # Log the incoming request
+        print(f"Received request with data: {request_json}")
+
+        try:
+            # Create a mock CloudEvent
+            mock_event = CloudEvent(
+                attributes={
+                    "type": "google.cloud.storage.object.v1.finalized",
+                    "source": "//storage.googleapis.com",
+                },
+                data={
+                    "id": request_json.get("id", "test-id"),
+                    "bucket": request_json.get("bucket", "test-bucket"),
+                    "name": request_json.get("name", "test.pdf"),
+                    "contentType": request_json.get("contentType", "application/pdf"),
+                    "timeCreated": datetime.now().isoformat(),
+                }
+            )
+
+            # Call the cloud function
+            on_cloud_event(mock_event)
+
+            # Send response
+            self.send_response(200)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')  # CORS header
+            self.end_headers()
+            response = {"status": "success", "message": "Document processed successfully"}
+            self.wfile.write(json.dumps(response).encode())
+
+        except Exception as e:
+            # Log and send error response
+            print(f"Error processing request: {str(e)}")
+            self.send_response(500)
+            self.send_header('Content-type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            error_response = {"status": "error", "message": str(e)}
+            self.wfile.write(json.dumps(error_response).encode())
+
+    def do_OPTIONS(self):
+        # Handle CORS preflight requests
+        self.send_response(204)
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
+        self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+        self.end_headers()
+
+
+if __name__ == '__main__':
+    PORT = 8080
+    Handler = CloudFunctionHandler
+
+    try:
+        with socketserver.TCPServer(("", PORT), Handler) as httpd:
+            print(f"Starting server at port {PORT}")
+            print("To test locally, send a POST request to:")
+            print(f"http://localhost:{PORT}")
+            print("\nExample curl command:")
+            print('''curl -X POST http://localhost:8080 \\
+    -H "Content-Type: application/json" \\
+    -d '{
+        "id": "test-id",
+        "bucket": "test-bucket",
+        "name": "test.pdf",
+        "contentType": "application/pdf"
+    }'
+            ''')
+            httpd.serve_forever()
+    except KeyboardInterrupt:
+        print("\nShutting down server...")
+        httpd.server_close()
+
+'''
+gcloud compute firewall-rules create allow-function-8080 \
+    --allow tcp:8080 \
+    --source-ranges="0.0.0.0/0" \
+    --description="Allow incoming traffic on TCP port 8080"
+'''
