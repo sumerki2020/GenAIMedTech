@@ -118,17 +118,17 @@ def generate(request):
     # Log CORS details
     logger.info(f"Request origin: {origin}")
     
-    if origin in allowed_origins:
-        headers = {
-            'Access-Control-Allow-Origin': origin,
-            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-            'Vary': 'Origin'
-        }
-        logger.info("CORS headers applied for allowed origin")
-    else:
-        headers = {}
-        logger.warning(f"Request from unauthorized origin: {origin}")
+    #if origin in allowed_origins:
+    headers = {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Vary': 'Origin'
+    }
+    logger.info("CORS headers applied for allowed origin")
+    #else:
+    #    headers = {}
+    #    logger.warning(f"Request from unauthorized origin: {origin}")
 
     # Handle OPTIONS request (preflight)
     if request.method == 'OPTIONS':
@@ -149,5 +149,4 @@ def generate(request):
     response_text = generate_llm_response(user_prompt, context)
     
     # Return the generated response
-    return jsonify({"response": response_text})
-
+    return (jsonify({"response": response_text}), 200, headers)
