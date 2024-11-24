@@ -27,7 +27,7 @@ export default function RootLayout({
         
         <footer className="bg-white border-t mt-8">
           <div className="max-w-4xl mx-auto p-4 text-center text-navy-700">
-            © 2024 GenAIMedTech
+            © 2025 GenAIMedTech
           </div>
         </footer>
       </body>

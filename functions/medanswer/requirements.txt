@@ -1,4 +1,4 @@
 functions-framework
 scikit-learn
 vertexai
-
+google-cloud-logging==3.*

@@ -6,6 +6,17 @@ from google.cloud import bigquery
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+import google.cloud.logging
+import logging
+
+# Instantiate a client
+client = google.cloud.logging.Client()
+client.setup_logging()
+
+# Create a custom logger
+logger = logging.getLogger('medanswer_logger')
+logger.setLevel(logging.INFO)
+
 # Initialize Vertex AI API
 vertexai.init(project="genaimedtech", location="us-central1")
 
@@ -100,6 +111,7 @@ User Query:"""
 @functions_framework.http
 def generate(request):
     """HTTP Cloud Function to interact with LLM."""
+    
     allowed_origins = ['http://localhost:3000','http://127.0.0.1:3000','https://genaimedtech.storage.googleapis.com']
     origin = request.headers.get('Origin')
     
@@ -122,7 +134,7 @@ def generate(request):
     if request.method == 'OPTIONS':
         logger.info("Handling OPTIONS preflight request")
         return ('', 204, headers)
-
+        
     # Get user input from request body
     request_json = request.get_json(silent=True)
     if not request_json or 'prompt' not in request_json:
